@@ -1,12 +1,10 @@
 FROM roninkenji/slackware-base:latest
 MAINTAINER roninkenji
 
-WORKDIR /opt
-ENV HOME=/opt
-USER nobody
+RUN mkdir -p /dropbox/Dropbox /dropbox/.dropbox /dropbox/.dropbox-dista
+WORKDIR /dropbox
 EXPOSE 17500
 
-RUN mkdir -p /opt/Dropbox /opt/.dropbox /opt/.dropbox-dista
 
 RUN slackpkg -batch=on -default_answer=yes install python ca-certificates && ( cd /etc/ssl/certs; grep -v '^#' /etc/ca-certificates.conf | while read CERT; do ln -fsv /usr/share/ca-certificates/$CERT `basename ${CERT/.crt/.pem}`; ln -fsv /usr/share/ca-certificates/$CERT `openssl x509 -hash -noout -in /usr/share/ca-certificates/$CERT`.0; done )
 
@@ -16,5 +14,5 @@ RUN wget -O- https://www.dropbox.com/download?plat=lnx.x86_64 | tar -C /usr/loca
 
 ADD myinit.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/myinit.sh
-ENTRYPOINT ["/usr/local/bin/myinit.sh", "start"]
+ENTRYPOINT ["/usr/local/bin/myinit.sh"]
 
