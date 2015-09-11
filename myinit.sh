@@ -1,7 +1,7 @@
 #!/bin/bash
 
 DROPBOX_USER=${DROPBOX_USER:-nobody}
-DROPBOX_USERID=${DROPBOX_USERID:-100}
+DROPBOX_USERID=${DROPBOX_USERID:-99}
 DROPBOX_GROUP=${DROPBOX_GROUP:-users}
 DROPBOX_GROUPID=${DROPBOX_GROUPID:-100}
 
@@ -11,5 +11,5 @@ usermod -d /dropbox -m ${DROPBOX_USER}
 
 [ ! -f $HOME/.dropbox-dist/dropboxd ] && cp -rp /usr/local/.dropbox-dist $HOME/.
 [ ! -d $HOME/.dropbox/instance1 ] && exec $HOME/.dropbox-dist/dropboxd
-su - ${DROPBOX_USER} -c "/usr/local/bin/dropbox.py"
+su - ${DROPBOX_USER} -c "/usr/local/bin/dropbox.py start"
 
