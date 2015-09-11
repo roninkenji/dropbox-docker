@@ -9,7 +9,7 @@ getent group ${DROPBOX_GROUP} 2>&1 > /dev/null || groupadd -g ${DROPBOX_GROUPID}
 getent passwd ${DROPBOX_USER} 2>&1 > /dev/null && usermod -d /dropbox -s /bin/bash
 getent passwd ${DROPBOX_USER} 2>&1 > /dev/null || useradd -d /dropbox -g ${DROPBOX_GROUP} -G users -u ${DROPBOX_USERID} -s /bin/bash ${DROPBOX_USER}
 
-[ ! -f $HOME/.dropbox-dist/dropboxd ] && cp -rp /usr/local/.dropbox-dist $HOME/.
-[ ! -d $HOME/.dropbox/instance1 ] && su -l ${DROPBOX_USER} -c "exec $HOME/.dropbox-dist/dropboxd"
+[ ! -f /dropbox/.dropbox-dist/dropboxd ] && su -l ${DROPBOX_USER} -c "cp -rp /usr/local/.dropbox-dist /dropbox/."
+[ ! -d /dropbox/.dropbox/instance1 ] && su -l ${DROPBOX_USER} -c "exec $HOME/.dropbox-dist/dropboxd"
 su -l ${DROPBOX_USER} -c "/usr/local/bin/dropbox.py start"
 
