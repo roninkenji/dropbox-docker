@@ -11,5 +11,5 @@ getent passwd ${DROPBOX_USER} 2>&1 > /dev/null || useradd -d /dropbox -g ${DROPB
 
 [ ! -f /dropbox/.dropbox-dist/dropboxd ] && su -l ${DROPBOX_USER} -c "cp -r /usr/local/.dropbox-dist /dropbox/."
 [ $( cat /dropbox/.dropbox-dist/VERSION ) != $( sort -rV /dropbox/.dropbox-dist/VERSION /usr/local/.dropbox-dist/VERSION | head -n 1 ) ] && su -l ${DROPBOX_USER} -c "rm -fr /dropbox/.dropbox-dist/*; cp -r /usr/local/.dropbox-dist/* /dropbox/.dropbox-dist"
-su -l ${DROPBOX_USER} -c "/dropbox/.dropbox-dist/dropboxd"
-
+su -l ${DROPBOX_USER} -c "/dropbox/.dropbox-dist/dropboxd" &
+while true; do sleep 86400; done
