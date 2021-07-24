@@ -1,5 +1,4 @@
 # dropbox-docker
-Dropbox client under Slackware userspace
+Dropbox client under Debian userspace
 
 [Dropbox](www.dropbox.com)
-

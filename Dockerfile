@@ -1,4 +1,4 @@
-FROM roninkenji/slackware-base:latest
+FROM debian:buster-slim
 LABEL maintainer=roninkenji
 
 RUN mkdir -p /dropbox
@@ -6,28 +6,15 @@ WORKDIR /dropbox
 EXPOSE 17500
 EXPOSE 17500/udp
 
-RUN slackpkg update && \
-    slackpkg -batch=on -default_answer=yes install \
-    cxxlibs gcc-[0-9] \
-    glibc-[0-9] \
-    shadow \
-    python-2.7 \
-    mesa \
-    libX11 \
-    libXau \
-    libxcb \
-    libXdamage \
-    libXdmcp \
-    libXext \
-    libXfixes \
-    libxshmfence \
-    libXxf86vm
+RUN apt update && apt install -y \
+    python3 \
+    qt5dxcb-plugin \
+    wget
 
-#RUN wget -nv -O /usr/local/bin/dropbox.py https://www.dropbox.com/download?dl=packages/dropbox.py && chmod +x /usr/local/bin/dropbox.py
 RUN wget -nv -O- https://www.dropbox.com/download?plat=lnx.x86_64 | tar -C /usr/local -zx && chown -Rv root:root /usr/local/.dropbox-dist
 
-ADD dropbox.py /usr/local/bin/dropbox.py
 ADD dockerinit.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/dropbox.py /usr/local/bin/dockerinit.sh
+ADD https://linux.dropbox.com/packages/dropbox.py /usr/local/bin/dropbox.py
+RUN chmod 0755 /usr/local/bin/dropbox.py /usr/local/bin/dockerinit.sh
 
 ENTRYPOINT ["/usr/local/bin/dockerinit.sh"]
