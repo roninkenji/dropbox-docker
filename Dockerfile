@@ -6,9 +6,11 @@ WORKDIR /dropbox
 EXPOSE 17500
 EXPOSE 17500/udp
 
-RUN slackpkg update && \
+RUN slackpkg -batch=on -default_answer=yes update && slackpkg -batch=on -default_answer=yes upgrade-all && \
+    ( cd /etc/ssl/certs; grep -v '^#' /etc/ca-certificates.conf | while read CERT; do ln -fsv /usr/share/ca-certificates/$CERT `basename ${CERT/.crt/.pem}`; ln -fsv /usr/share/ca-certificates/$CERT `openssl x509 -hash -noout -in /usr/share/ca-certificates/$CERT`.0; done ) && \
     slackpkg -batch=on -default_answer=yes install \
-    cxxlibs gcc-[0-9] \
+    cxxlibs \
+    gcc-[0-9] \
     glibc-[0-9] \
     shadow \
     python-2.7 \
